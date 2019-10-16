@@ -45,7 +45,7 @@ class FragmentActivityTask3 : AppCompatActivity() {
             counterButton.text = ("${counter.currentCount} taps")
         }
         nextActivityButton.setOnClickListener{
-            val intent= Intent(this,MyFragment::class.java)
+            val intent= Intent(this,SecondActivity::class.java)
             intent.putExtra("enabling",!indicatorButton.isEnabled)
             intent.putExtra("count",counter.currentCount)
             intent.putExtra("text",textField.text.toString())
