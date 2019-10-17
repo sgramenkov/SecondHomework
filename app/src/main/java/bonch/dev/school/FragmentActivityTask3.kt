@@ -3,10 +3,12 @@ package bonch.dev.school
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import kotlin.String as String1
 
 class FragmentActivityTask3 : AppCompatActivity() {
 
@@ -21,14 +23,11 @@ class FragmentActivityTask3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_task3)
-
-        indicatorButton=findViewById(R.id.indicator_button)
-        counterButton=findViewById(R.id.counter_button)
-        textField=findViewById(R.id.text_field)
-        nextActivityButton=findViewById(R.id.next_activity_button)
-        attachFragmentButton=findViewById(R.id.attach_fragment_button)
+        initializeViews()
+        setListeners()
 
         val tapAmount: Int = savedInstanceState?.getInt("TAP_AMOUNT") ?: 0
+        setInstanceState(savedInstanceState)
 
         Log.e("COUNT", tapAmount.toString())
 
@@ -36,6 +35,44 @@ class FragmentActivityTask3 : AppCompatActivity() {
 
         counter = Counter(tapAmount)
 
+
+    }
+    fun addFragment(){
+        val myFragment=MyFragment()
+        fm.beginTransaction().replace(R.id.fragment_container,myFragment).commit()
+    }
+    fun getintent(): String1 {
+        val getBool=!indicatorButton.isEnabled
+        val getCount = counter.currentCount
+        val getText = textField.text.toString()
+        return ("Кнопка была нажата?\n$getBool\nКоличество нажатий на кнопку:\n$getCount\nВведенный текст:\n$getText")
+    }
+    private fun setInstanceState(savedInstanceState: Bundle?){
+        if (savedInstanceState == null) {
+            counter = Counter()
+        } else {
+            counter = Counter(savedInstanceState.getInt("TAP_AMOUNT"))
+            indicatorButton.isEnabled = savedInstanceState.getBoolean("enabling")
+            //Data type of <EditText> is "editable", not String
+            textField.text = Editable.Factory.getInstance().newEditable(savedInstanceState.getString("text"))
+        }
+        counterButton.text = "${counter.currentCount}"
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("TAP_AMOUNT", counter.currentCount)
+        outState.putBoolean("enabling", !indicatorButton.isEnabled)
+        outState.putString("text", textField.text.toString())
+    }
+    fun initializeViews(){
+        indicatorButton=findViewById(R.id.indicator_button)
+        counterButton=findViewById(R.id.counter_button)
+        textField=findViewById(R.id.text_field)
+        nextActivityButton=findViewById(R.id.next_activity_button)
+        attachFragmentButton=findViewById(R.id.attach_fragment_button)
+    }
+    fun setListeners(){
         indicatorButton.setOnClickListener{
             it.isEnabled=false
         }
@@ -54,15 +91,5 @@ class FragmentActivityTask3 : AppCompatActivity() {
         attachFragmentButton.setOnClickListener(){
             addFragment()
         }
-    }
-    fun addFragment(){
-        val myFragment=MyFragment()
-        fm.beginTransaction().replace(R.id.fragment_container,myFragment).commit()
-    }
-    fun getintent():String{
-        var getBool=!indicatorButton.isEnabled
-        var getCount = counter.currentCount
-        var getText = textField.text.toString()
-        return ("Кнопка была нажата?\n$getBool\nКоличество нажатий на кнопку:\n$getCount\nВведенный текст:\n$getText")
     }
 }
