@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import kotlin.String as String1
+
 
 class FragmentActivityTask3 : AppCompatActivity() {
 
@@ -41,7 +41,7 @@ class FragmentActivityTask3 : AppCompatActivity() {
         val myFragment=MyFragment()
         fm.beginTransaction().replace(R.id.fragment_container,myFragment).commit()
     }
-    fun getintent(): String1 {
+    fun getintent(): String {
         val getBool=!indicatorButton.isEnabled
         val getCount = counter.currentCount
         val getText = textField.text.toString()

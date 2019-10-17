@@ -11,8 +11,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.*
 
-class MyFragment : Fragment() {
+class MyFragment() : Fragment() {
 private lateinit var textView:TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,6 +21,7 @@ private lateinit var textView:TextView
     ): View? {
         val view = inflater.inflate(R.layout.activity_my_fragment,container,false)
         textView=view.findViewById(R.id.text_viewfg)
+
         textView.setText((activity as FragmentActivityTask3).getintent())
 
         return view
